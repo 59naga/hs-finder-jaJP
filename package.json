@@ -1,0 +1,32 @@
+{
+  "name": "remember-react",
+  "scripts": {
+    "build": "webpack",
+    "start": "npm-run-all start:*",
+    "start:open": "open http://localhost:8080/webpack-dev-server/",
+    "start:server": "webpack-dev-server"
+  },
+  "dependencies": {
+    "lodash": "^3.10.1",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
+    "react-mdl": "^1.0.4",
+    "react-redux": "^4.0.1",
+    "redux": "^3.0.5",
+    "xhr": "^2.2.0",
+    "zlibjs": "^0.2.0"
+  },
+  "devDependencies": {
+    "babel-loader": "^5.4.0",
+    "css-loader": "^0.23.0",
+    "kouto-swiss": "^0.11.13",
+    "npm-run-all": "^1.2.13",
+    "style-loader": "^0.13.0",
+    "stylus-loader": "^1.4.2",
+    "webpack": "^1.12.4",
+    "webpack-dev-server": "^1.12.1"
+  },
+  "babel": {
+    "stage": 0
+  }
+}
