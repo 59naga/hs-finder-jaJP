@@ -1,5 +1,7 @@
 {
-  "name": "remember-react",
+  "name": "hs-finder-ja",
+  "private": true,
+
   "scripts": {
     "build": "webpack",
     "start": "npm-run-all start:*",
