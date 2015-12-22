@@ -29,7 +29,7 @@ npm run build
 ---
 
 * 動作保証ブラウザは現在、`GoogleChrome`, `Firefox`の最新版のみです。
-* `https://hearthstonejson.com/json/AllSetsAllLanguages.json.zip`に依存します。
+* `https://hearthstonejson.com/json/AllSetsAllLanguages.json.zip`に依存します。([HearthSim/hearthstonejson](https://github.com/HearthSim/hearthstonejson))
 
 License
 ---
