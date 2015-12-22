@@ -31,6 +31,12 @@ npm run build
 * 動作保証ブラウザは現在、`GoogleChrome`, `Firefox`の最新版のみです。
 * `https://hearthstonejson.com/json/AllSetsAllLanguages.json.zip`に依存します。([HearthSim/hearthstonejson](https://github.com/HearthSim/hearthstonejson))
 
+更新履歴
+---
+* `v0.0.3` 修正：レアリティに基本カード（`Free`）を追加
+* `v0.0.2` 追加：レアリティ、カード種別
+* `v0.0.1` 変更：リンク先を「英名」から「日名/英名」へ。これは、wikiの「ハースストーン日本語化にあたっての方針」内の命名規則に準拠するためです。
+
 License
 ---
 [MIT](http://59naga.mit-license.org/)

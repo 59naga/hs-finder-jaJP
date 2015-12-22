@@ -129,6 +129,7 @@ class Form extends React.Component{
     })
 
     const rarities= [
+      'Free',
       'Common',
       'Rare',
       'Epic',
