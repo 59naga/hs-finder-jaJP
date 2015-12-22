@@ -14,6 +14,7 @@ import _ from 'lodash'
 
 require('./index.styl')
 const url= 'https://hearthstonejson.com/json/AllSetsAllLanguages.json.zip'
+const language= 'jaJP'
 const getPlayerClass= (name)=>{
   if(name===undefined){
     return ''
@@ -36,9 +37,11 @@ class Form extends React.Component{
   }
   handleReset(event){
     this.setState({
-      words: null,
-      cost: null,
       player: null,
+      cost: null,
+      words: null,
+
+      area: null,
       type: null,
       rarity: null,
     })
@@ -107,48 +110,20 @@ class Form extends React.Component{
     conditions.rarity= rarity
     this.refs.list.find(conditions)
   }
+  handleChangeArea(event){
+    const conditions= this.getConditions()
+
+    let area= event.target.value
+    if(this.state.area===area){
+      area= null
+    }
+    this.setState({area:area})
+
+    conditions.area= area
+    this.refs.list.find(conditions)
+  }
 
   render(){
-    const types= [
-      'Minion',
-      'Spell',
-      'Weapon',
-    ].map((type)=>{
-      return (
-        <label key={'type'+type}>
-          <input
-            type="checkbox"
-            name="type"
-            value={type}
-            checked={this.state.type===type}
-            onChange={::this.handleChangeType}
-          />
-          {type}
-        </label>
-      )
-    })
-
-    const rarities= [
-      'Free',
-      'Common',
-      'Rare',
-      'Epic',
-      'Legendary',
-    ].map((rarity)=>{
-      return (
-        <label key={'rarity'+rarity}>
-          <input
-            type="checkbox"
-            name="rarity"
-            value={rarity}
-            checked={this.state.rarity===rarity}
-            onChange={::this.handleChangeRarity}
-          />
-          {rarity}
-        </label>
-      )
-    })
-
     const classes= [
       'Druid',
       'Hunter',
@@ -193,10 +168,75 @@ class Form extends React.Component{
       )
     }
 
+    const areas= [
+      {value:'',jaJP:'全てのセット'},
+      {value:'Basic',jaJP:'基本'},
+      {value:'Classic',jaJP:'クラシック'},
+      {value:'Reward',jaJP:'報酬'},
+      {value:'Curse of Naxxramas',jaJP:'ナクスラーマス'},
+      {value:'Goblins vs Gnomes',jaJP:'ゴブリンvsノーム'},
+      {value:'Blackrock Mountain',jaJP:'ブラックロック・マウンテン'},
+      {value:'The Grand Tournament',jaJP:'グランド・トーナメント'},
+      {value:'League of Explorers',jaJP:'エクスプローラー'},
+    ].map((area)=>{
+      return (
+        <option
+          key={'area'+area.value}
+          value={area.value}
+        >
+          {area.jaJP}
+        </option>
+      )
+    })
+
+    const types= [
+      'Minion',
+      'Spell',
+      'Weapon',
+    ].map((type)=>{
+      return (
+        <label key={'type'+type}>
+          <input
+            type="checkbox"
+            name="type"
+            value={type}
+            checked={this.state.type===type}
+            onChange={::this.handleChangeType}
+          />
+          {type}
+        </label>
+      )
+    })
+
+    const rarities= [
+      'Free',
+      'Common',
+      'Rare',
+      'Epic',
+      'Legendary',
+    ].map((rarity)=>{
+      return (
+        <label key={'rarity'+rarity}>
+          <input
+            type="checkbox"
+            name="rarity"
+            value={rarity}
+            checked={this.state.rarity===rarity}
+            onChange={::this.handleChangeRarity}
+          />
+          {rarity}
+        </label>
+      )
+    })
+
     return (
       <div>
         <div id="hs">
           <form onSubmit={::this.handleSubmit}>
+            <div className="classes">{classes}</div>
+            <div>
+              <select name="area" onChange={::this.handleChangeArea}>{areas}</select>
+            </div>
             <input
               ref='words'
               autoFocus
@@ -205,10 +245,9 @@ class Form extends React.Component{
 
               placeholder="カード名（日／英）説明で検索できるぞ"
             />
+            <div className="costs">{costs}</div>
             <div className="rarities">{rarities}</div>
             <div className="types">{types}</div>
-            <div className="classes">{classes}</div>
-            <div className="costs">{costs}</div>
             <footer>
               <button>検索</button>
               <button type="reset" onClick={::this.handleReset}>リセット</button>
@@ -241,43 +280,31 @@ class List extends React.Component{
       const filenames= unzip.getFilenames()
       const buffer= new Buffer(unzip.decompress(filenames[0]),'utf8')
       const languages= JSON.parse(buffer.toString())
+      const areas= languages[language]
 
-      this.setState({languages})
+      let cards= []
+      let enCards= []
+      for(let area in areas){
+        cards= cards.concat(areas[area].map((card)=>{
+          card.area= area
+          return card
+        }))
+        enCards= enCards.concat(languages.enUS[area].map((card)=>{
+          card.area= area
+          return card
+        }))
+      }
+
+      this.setState({cards,enCards})
       this.find()
     })
   }
-  find({words,cost,player,type,rarity}={}){
-    const language= 'jaJP'
-    const areas= this.state.languages[language]
-
-    let cards= []
-    let enCards= []
-    for(let area in areas){
-      cards= cards.concat(areas[area])
-      enCards= enCards.concat(this.state.languages.enUS[area])
-    }
-
+  find({player,cost,words,area,type,rarity}={}){
     const found= _
-      .chain(cards)
+      .chain(this.state.cards)
       .filter('flavor')
       .filter('collectible')
       .filter((card)=>{
-        let isChosenType= true
-        if(type!=null){
-          isChosenType= card.type===type
-        }
-        if(!isChosenType){
-          return false
-        }
-
-        let isChosenRarity= true
-        if(rarity!=null){
-          isChosenRarity= card.rarity===rarity
-        }
-        if(!isChosenRarity){
-          return false
-        }
-
         let isChosenPlayer= true
         if(player!=null){
           isChosenPlayer= player==='Neutral'? card.playerClass===undefined: card.playerClass===player
@@ -294,12 +321,36 @@ class List extends React.Component{
           return false
         }
 
+        let isChosenArea= true
+        if(area!=null && area!==''){
+          isChosenArea= card.area===area
+        }
+        if(!isChosenArea){
+          return false
+        }
+
+        let isChosenRarity= true
+        if(rarity!=null){
+          isChosenRarity= card.rarity===rarity
+        }
+        if(!isChosenRarity){
+          return false
+        }
+
+        let isChosenType= true
+        if(type!=null){
+          isChosenType= card.type===type
+        }
+        if(!isChosenType){
+          return false
+        }
+
         if((words || '').length===0){
           return isChosenCost && isChosenPlayer
         }
         
         const regexp= new RegExp(words,'i')
-        const enCard= _.find(enCards,'id',card.id)
+        const enCard= _.find(this.state.enCards,'id',card.id)
         const matched= card.name.match(regexp) || enCard.name.match(regexp) || (card.text || '').match(regexp)
 
         return matched
@@ -307,7 +358,7 @@ class List extends React.Component{
       .sortBy('name')
       .sortBy('cost')
       .map((card)=>{
-        const enCard= _.find(enCards,'id',card.id)
+        const enCard= _.find(this.state.enCards,'id',card.id)
 
         const url= 'http://hearthstonemaniac.com/index.php?'+encodeURIComponent(card.name+'/'+enCard.name)
         const thumbnail= 'http://wow.zamimg.com/images/hearthstone/cards/enus/original/'+card.id+'.png'
@@ -333,7 +384,7 @@ class List extends React.Component{
             </th>
             <td className="num">{card.cost}</td>
             <td className="num">{card.attack}</td>
-            <td className="num">{card.health}</td>
+            <td className="num">{card.health || card.durability}</td>
             <td className="description" dangerouslySetInnerHTML={description}></td>
           </tr>
         )
