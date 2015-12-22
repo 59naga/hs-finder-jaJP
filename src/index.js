@@ -2,6 +2,7 @@
 # TODO
 - リファクタリング（重複コードがすごく多い）
 - テスト（バグの巣窟）
+- コードの並び順も合わせる
 */
 
 import React from 'react'
@@ -38,10 +39,10 @@ class Form extends React.Component{
   handleReset(event){
     this.setState({
       player: null,
-      cost: null,
+      area: null,
       words: null,
 
-      area: null,
+      cost: null,
       type: null,
       rarity: null,
     })
@@ -150,24 +151,6 @@ class Form extends React.Component{
       )
     })
 
-    const costs= []
-    for(let i=0; i<=7; i++){
-      let text= i===7? '7以上': i;
-
-      costs.push(
-        <label key={'cost'+i}>
-          <input
-            type="checkbox"
-            name="cost"
-            value={i}
-            checked={this.state.cost===i}
-            onChange={::this.handleChangeCost}
-          />
-          {text}
-        </label>
-      )
-    }
-
     const areas= [
       {value:'',jaJP:'全てのセット'},
       {value:'Basic',jaJP:'基本'},
@@ -188,6 +171,24 @@ class Form extends React.Component{
         </option>
       )
     })
+
+    const costs= []
+    for(let i=0; i<=7; i++){
+      let text= i===7? '7以上': i;
+
+      costs.push(
+        <label key={'cost'+i}>
+          <input
+            type="checkbox"
+            name="cost"
+            value={i}
+            checked={this.state.cost===i}
+            onChange={::this.handleChangeCost}
+          />
+          {text}
+        </label>
+      )
+    }
 
     const types= [
       'Minion',
