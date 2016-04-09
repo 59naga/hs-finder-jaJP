@@ -14,7 +14,9 @@ import {Zlib} from 'zlibjs/bin/unzip.min'
 import _ from 'lodash'
 
 require('./index.styl')
-const url= 'https://hearthstonejson.com/json/AllSetsAllLanguages.json.zip'
+// const url= 'https://hearthstonejson.com/json/AllSetsAllLanguages.json.zip'
+// const url= 'https://api.hearthstonejson.com/v1/latest/all/cards.json'
+const url= 'https://static.edgy.black/misc/AllSetsAllLanguages.json.zip'
 const language= 'jaJP'
 const getPlayerClass= (name)=>{
   if(name===undefined){
