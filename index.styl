@@ -1,0 +1,121 @@
+@import 'kouto-swiss'
+
+#title
+  meyer-reset()
+
+  text-align right
+  margin-right 1em
+
+  h1
+    font-family 'Josefin Sans' sans-serif
+
+    font-size x-large
+
+#hs
+  meyer-reset()
+
+  .mark
+  .num
+    min-width 2em
+    max-width 2em
+
+  .mark
+    text-align center
+  .num
+    text-align right
+  .description
+    font-size small
+
+    padding 0 .5em
+
+  .notify
+    margin 1em
+
+    font-size xx-large
+    font-family Monaco,monospace
+
+  form
+    margin 1em
+    margin-bottom 2em
+
+    select
+      margin 0.5em 0
+
+    input
+      width 100%
+      font-size 200%
+      font-family Monaco,monospace
+
+    .rarities
+    .types
+    .classes
+    .costs
+      label
+        display inline-block
+        text-align left
+        width 6em
+
+        input
+          width auto
+
+        span
+          font-size xx-small
+
+    footer
+      text-align right
+
+  table
+    margin 1em
+
+    caption
+      text-align left
+
+    tr:nth-of-type(2n)
+      background-color #EEE
+    tr
+      >*
+        overflow ellipsis
+        vertical-align middle
+
+      th
+        text-align left
+
+        figure
+        h2
+        aside
+          display inline-block
+
+        figure
+          width 64px
+          height 32px
+          overflow hidden
+
+          margin-right .5em
+          vertical-align middle
+
+          position relative
+          img
+            width 128px
+            absolute 0 0 0 -32px
+            margin auto 0
+            margin-top -40px
+
+        h2
+          font-size medium
+          width 12em
+          overflow ellipsis
+
+        position relative
+        aside
+          absolute false 0 0 false
+
+          opacity .75
+          font-size xx-small
+
+        .mdl-tooltip
+          max-width 230px
+          img
+            width 75%
+
+      b
+        font-weight bold
